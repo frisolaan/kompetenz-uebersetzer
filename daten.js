@@ -127,6 +127,57 @@ window.DATEN = {
       begriffe: ["Informationsmanagement", "Lernstrategien", "Problemlösefähigkeit", "ökologisches Verhalten", "Fachkompetenz (berufsspezifisch)"] }
   ],
 
+  // Siegelstufen für Angebote ausserschulischer Lernorte
+  siegel: {
+    "gelistet":   "Angebot ist erfasst. Die Zuordnung zu Badges ist noch nicht begründet.",
+    "deklariert": "Der Anbieter hat die angesprochenen Badges mit Indikatoren begründet (Selbstdeklaration).",
+    "geprüft":    "Das Kuratorium hat die Begründungen anhand der Indikatoren geprüft und bestätigt."
+  },
+
+  // Fallback-Angebote: frei erfundene BEISPIELE zur Demonstration (keine realen Anbieter).
+  angebote: [
+    { id: "bsp-solarboot", beispiel: true, titel: "Solarboot-Werkstatt", anbieter: "Beispiel-Lernort «Werkstatt am See»", ort: "Thurgau (Beispiel)",
+      dauer: "1 Tag", zyklus: ["Zyklus 2", "Zyklus 3"], kosten: "CHF 20 pro Kind (Beispiel)", siegel: "geprüft",
+      kurz: "Teams bauen ein kleines Solarboot, testen es im Wasserbecken und verbessern es in mehreren Runden.",
+      ablauf: [
+        ["08:30–10:00", "Einstieg & Forschungsfrage", "Jedes Team formuliert, was sein Boot können soll"],
+        ["10:00–12:00", "Bauen & erster Test", "Ein schwimmender erster Prototyp"],
+        ["13:00–15:00", "Verbessern in Runden", "Mindestens zwei dokumentierte Verbesserungen"],
+        ["15:00–16:00", "Regatta & Präsentation", "Jedes Team erklärt seine wichtigste Designentscheidung"]
+      ],
+      badges: [
+        ["prototypen", "Teams verbessern gezielt in mehreren Durchläufen und begründen Designentscheide (Z3)."],
+        ["forschen", "Annahmen zu Rumpfform und Gewicht werden im Becken getestet (Z3: testet gezielt Annahmen)."],
+        ["team", "Feste Rollen im Team: Bau, Elektrik, Dokumentation."],
+        ["durchhalten", "Kentern und Neuanfang gehören zum Ablauf; Fehler werden zur Verbesserung genutzt."],
+        ["praesentieren", "Abschlusspräsentation mit Begründung und Rückfragen."]
+      ] },
+    { id: "bsp-roboter", beispiel: true, titel: "Roboter-Parcours", anbieter: "Beispiel-Lernort «Digitallabor»", ort: "Thurgau (Beispiel)",
+      dauer: "Halber Tag", zyklus: ["Zyklus 2"], kosten: "kostenlos (Beispiel)", siegel: "deklariert",
+      kurz: "Kinder programmieren kleine Roboter so, dass sie einen Parcours selbstständig bewältigen.",
+      ablauf: [
+        ["13:30–14:15", "Roboter kennenlernen", "Erste Befehle ausprobiert"],
+        ["14:15–15:30", "Parcours in Teilstücke zerlegen", "Ablauf für jedes Teilstück geplant und getestet"],
+        ["15:30–16:30", "Gesamtlauf & Fehlersuche", "Parcours vollständig gefahren"]
+      ],
+      badges: [
+        ["zerlegen", "Der Parcours wird in Teilschritte zerlegt und der Reihe nach gelöst (Z2)."],
+        ["digital", "Kinder nutzen eine einfache Programmierumgebung (Z2: nutzt grundlegende digitale Werkzeuge)."],
+        ["durchhalten", "Fehlersuche bis zum erfolgreichen Gesamtlauf."]
+      ] },
+    { id: "bsp-flickwerk", beispiel: true, titel: "Reparieren statt wegwerfen", anbieter: "Beispiel-Verein «Flickwerk»", ort: "Thurgau (Beispiel)",
+      dauer: "3 Nachmittage", zyklus: ["Zyklus 3"], kosten: "CHF 10 Materialbeitrag (Beispiel)", siegel: "gelistet",
+      kurz: "Jugendliche reparieren mit Freiwilligen Alltagsgegenstände von Besucherinnen und Besuchern eines Reparaturtreffs.",
+      ablauf: [
+        ["Tag 1", "Fehler finden", "Diagnose für zwei Gegenstände"],
+        ["Tag 2", "Reparieren mit Kundschaft", "Mindestens eine Reparatur abgeschlossen"],
+        ["Tag 3", "Rückblick & Kurzpräsentation", "Plakat: Was wurde gerettet?"]
+      ],
+      badges: [
+        ["nachhaltig", ""], ["verantwortung", ""], ["einfuehlen", ""]
+      ] }
+  ],
+
   // Fallback-Zuordnungen (Erstvorschlag). Typ: entspricht | traegt_bei | keine
   zuordnungen: [
     ["neugier", "sbw", "passion", "entspricht"], ["neugier", "bivo", "lebenslanges Lernen", "traegt_bei"],
@@ -144,5 +195,5 @@ window.DATEN = {
     ["digital", "sbw", "", "keine"], ["digital", "bivo", "Informations- und Kommunikationstechnologien", "entspricht"],
     ["zerlegen", "sbw", "", "keine"], ["zerlegen", "bivo", "Arbeitstechniken und Problemlösen", "entspricht"],
     ["unternehmergeist", "sbw", "entre", "entspricht"], ["unternehmergeist", "bivo", "eigenverantwortliches Handeln", "traegt_bei"]
-  ].map(([badge, ebene, ziel, typ]) => ({ badge, ebene, ziel, typ, status: "Entwurf", begruendung: "Erstvorschlag, durch Kuratorium zu prüfen." }))
+  ].map(([badge, ebene, ziel, typ]) => ({ badge, ebene, ziel, typ, status: "Entwurf", quelle: "Kuratorium", begruendung: "Erstvorschlag, durch Kuratorium zu prüfen." }))
 };

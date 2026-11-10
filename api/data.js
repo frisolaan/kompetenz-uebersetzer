@@ -41,6 +41,8 @@ module.exports = async (req, res) => {
   }
 
   const clip = (s, n) => String(s || "").trim().slice(0, n);
+  const lines = s => String(s || "").split("\n").map(l => l.trim()).filter(Boolean);
+  const urlA = `${A}/${base}/${encodeURIComponent(process.env.AIRTABLE_TABLE_ANGEBOTE || "Angebote")}`;
 
   try {
     if (op === "zuordnungen") {
@@ -54,9 +56,52 @@ module.exports = async (req, res) => {
           ziel: f.Ziel || "",
           typ: TYP_IN[f.Typ] || "traegt_bei",
           status: f.Status || "Entwurf",
+          quelle: f.Quelle || "Kuratorium",
           begruendung: f.Begründung || ""
         }));
       return res.status(200).json({ zuordnungen: out });
+    }
+
+    if (op === "angebote") {
+      const recs = await listAll(urlA);
+      const out = recs
+        .map(r => ({ id: r.id, ...r.fields }))
+        .filter(f => f.Status === "publiziert" && f.Titel)
+        .map(f => ({
+          id: f.id, titel: f.Titel, anbieter: f.Anbieter || "", ort: f.Ort || "", dauer: f.Dauer || "",
+          zyklus: f.Zyklus || [], kosten: f.Kosten || "", kurz: f.Kurzbeschreibung || "",
+          siegel: f.Siegel || "gelistet", beispiel: !!f.Beispiel, website: f.Website || "",
+          ablauf: lines(f.Ablauf).map(l => l.split("|").map(s => s.trim())),
+          badges: lines(f.Badges).map(l => { const [id, ...r] = l.split("|"); return [id.trim(), r.join("|").trim()]; })
+        }));
+      return res.status(200).json({ angebote: out });
+    }
+
+    if (op === "angebot") {
+      if (req.method !== "POST") return res.status(405).json({ error: "POST erforderlich" });
+      let body = req.body;
+      if (typeof body === "string") { try { body = JSON.parse(body); } catch { body = {}; } }
+      const b = body || {};
+      if (!b.titel || !b.anbieter || !b.kontaktperson) return res.status(400).json({ error: "Titel, Anbieter und Kontaktperson sind erforderlich." });
+      const badges = Array.isArray(b.badges) ? b.badges.slice(0, 15) : [];
+      const ablauf = Array.isArray(b.ablauf) ? b.ablauf.slice(0, 8) : [];
+      const zyk = (Array.isArray(b.zyklus) ? b.zyklus : []).filter(z => ["Zyklus 2", "Zyklus 3"].includes(z));
+      const fields = {
+        Titel: clip(b.titel, 120), Anbieter: clip(b.anbieter, 160), Ort: clip(b.ort, 120), Dauer: clip(b.dauer, 60),
+        Kosten: clip(b.kosten, 80), Kurzbeschreibung: clip(b.kurz, 1200),
+        Ablauf: ablauf.map(p => (p || []).slice(0, 3).map(s => clip(s, 160).replace(/\|/g, "/")).join(" | ")).join("\n"),
+        Badges: badges.map(x => clip(x[0], 40) + (x[1] ? " | " + clip(x[1], 600).replace(/\n/g, " ") : "")).join("\n"),
+        // Selbstdeklaration nur, wenn jedes Badge begründet ist
+        Siegel: badges.length && badges.every(x => String(x[1] || "").trim()) ? "deklariert" : "gelistet",
+        Status: "eingereicht", Kontaktperson: clip(b.kontaktperson, 120)
+      };
+      if (zyk.length) fields.Zyklus = zyk;
+      if (b.email && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(b.email)) fields["Kontakt-E-Mail"] = clip(b.email, 160);
+      if (b.website && /^https?:\/\//.test(b.website)) fields.Website = clip(b.website, 300);
+      const r = await fetch(urlA, { method: "POST", headers: HJ, body: JSON.stringify({ fields, typecast: true }) });
+      const d = await r.json();
+      if (!r.ok) return res.status(r.status).json({ error: (d.error && d.error.message) || "Airtable-Fehler" });
+      return res.status(200).json({ id: d.id, siegel: fields.Siegel });
     }
 
     if (op === "rueckmeldungen") {

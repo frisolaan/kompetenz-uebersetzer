@@ -113,27 +113,84 @@ table.mx td.l,table.mx th.l{text-align:left;white-space:nowrap;}
 footer{font-size:12px;color:var(--muted);text-align:center;padding:24px 20px;}
 @media (max-width:820px){.cols{grid-template-columns:1fr}.col+.col{border-left:0}form.rm{grid-template-columns:1fr}.brow{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.tilebtn.flip{animation:none}}
+/* --- Stufe 1 --- */
+.rolepick{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);}
+.rolepick select{border:1px solid var(--line2);border-radius:999px;padding:7px 12px;font-size:14px;background:#fff8d6;color:var(--ink);font-weight:600;}
+.rolehint{background:#fff8d6;border-bottom:1px solid #ecd9a6;padding:8px 20px;font-size:13.5px;}
+.rolehint b{font-weight:600;}
+.speak{border:1px solid var(--line2);background:#fff;border-radius:999px;padding:3px 9px;font-size:12px;margin-top:6px;}
+.tile{display:flex;flex-direction:column;align-items:flex-start;}
+.tile .tilebtn{flex:1;}
+main:focus{outline:none;}
+.offers{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.offer{all:unset;box-sizing:border-box;cursor:pointer;display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;transition:box-shadow .12s;}
+.offer:hover{box-shadow:0 2px 10px rgba(0,0,0,.08);}
+.offer:focus-visible{outline:3px solid var(--focus);outline-offset:2px;}
+.offer h3{margin:4px 0 4px;font-size:16.5px;}
+.offer .anb{font-size:13px;color:var(--muted);}
+.offer .kurz{font-size:14px;margin:8px 0;}
+.facts{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;}
+.fact{font-size:12px;background:#f1efea;border-radius:6px;padding:3px 8px;}
+.siegel{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 9px;border-radius:999px;}
+.siegel.gelistet{background:#efeee9;color:#55554f;}
+.siegel.deklariert{background:#e3eefb;color:#1d4f8f;}
+.siegel.geprüft{background:#e2f2e7;color:#1f6b40;}
+.bsp{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:999px;background:#fbe9e9;color:#8a3b3b;}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0 4px;}
+.kpi{background:#f8f7f3;border-radius:10px;padding:10px 12px;}
+.kpi .k{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;}
+.kpi .v{font-size:15px;font-weight:600;margin-top:2px;}
+.kpi.hl{background:#fff8d6;}
+.phases{display:flex;flex-direction:column;gap:8px;}
+.phase{display:grid;grid-template-columns:130px 1fr;gap:12px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;}
+.phase .t{font-size:12.5px;color:var(--muted);font-weight:600;}
+.phase .n{font-weight:600;}
+.phase .e{font-size:13.5px;margin-top:3px;}
+.phase .e b{font-weight:600;}
+.top3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.t3{border:1px solid var(--line);border-top:4px solid var(--c);border-radius:12px;padding:12px;background:#fff;}
+.t3 .rank{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+.t3 h3{margin:4px 0 6px;font-size:15px;}
+.t3 .why{font-size:13px;color:#3d3d39;}
+.t3 .lo{margin-top:8px;font-size:13px;}
+.t3 .lo a{color:var(--focus);cursor:pointer;text-decoration:underline;}
+.quelle{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;background:#f1efea;color:#3d3d39;}
+table.list{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff;}
+table.list th,table.list td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top;}
+table.list th{background:#faf9f6;font-size:12px;}
+.badgepick{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:8px;}
+.bp{border:1px solid var(--line);border-radius:10px;padding:8px 10px;}
+.bp label{flex-direction:row !important;align-items:center;gap:8px !important;font-weight:600;color:var(--ink) !important;}
+.bp textarea{min-height:52px !important;margin-top:6px;width:100%;}
+.ph{display:grid;grid-template-columns:120px 1fr 1fr;gap:6px;}
+@media (max-width:820px){.top3{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.phase{grid-template-columns:1fr}.ph{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header class="top">
   <div class="brand"><strong>Kompetenz-Übersetzer</strong><span class="sub">SBW Future Skills × FSH-Badgeraster × Berufsbildung · Prototyp</span></div>
-  <nav class="tabs" aria-label="Ansichten">
-    <button class="tab" data-view="wand">Kachelwand</button>
-    <button class="tab" data-view="beruf">Berufsansicht</button>
-    <button class="tab" data-view="matrix">Matrix</button>
-    <button class="tab" data-view="about">Über</button>
-  </nav>
+  <nav class="tabs" id="tabs" aria-label="Ansichten"></nav>
+  <div class="rolepick"><label for="role">Rolle (Demo)</label><select id="role"></select></div>
 </header>
+<div class="rolehint" id="rolehint"></div>
 <div class="bar" id="bar"></div>
 <main id="main" tabindex="-1"></main>
-<footer>Future Skills Hub Thurgau · Prototyp · SBW Future Skills™ © SBW Haus des Lernens · Badgeraster: FSH Anhang A</footer>
+<footer>Future Skills Hub Thurgau · Prototyp · SBW Future Skills™ © SBW Haus des Lernens · Badgeraster: FSH Anhang A · Alle Lernort-Angebote mit «Beispiel» sind erfunden.</footer>
 
 <script src="daten.js"></script>
 <script>
 const D = window.DATEN;
-const S = { view: "wand", lesart: "du", zyklus: "z3", bereich: "alle", badge: null, beruf: "allgemein", source: "lädt …" };
+const ROLES = {
+  jugend:     { name: "Jugendliche",          lesart: "du",      views: ["wand", "lernorte"],                       hint: "Du siehst, was die Badges bedeuten und wo du sie ausserhalb der Schule üben kannst. Tipp: Lass dir die Kacheln vorlesen." },
+  lehrperson: { name: "Lehrperson",           lesart: "schule",  views: ["wand", "lernorte", "beruf", "matrix"],   hint: "Indikatoren für Zyklus 2 und 3, passende Lernorte für eure Klasse und der Anschluss an die Berufsbildung." },
+  anbieter:   { name: "Lernort-Anbieter",     lesart: "schule",  views: ["lernorte", "erfassen", "wand"],          hint: "Erfassen Sie Ihr Angebot und begründen Sie, welche Badges es anspricht. Das Kuratorium prüft und vergibt das Siegel." },
+  betrieb:    { name: "Betrieb / KMU",        lesart: "betrieb", views: ["beruf", "wand", "lernorte"],             hint: "Wählen Sie einen Beruf: Sie sehen die drei Badges, die am meisten einzahlen, und Lernorte, die sie fördern." },
+  kuratorium: { name: "Kuratorium",           lesart: "schule",  views: ["zuordnungen", "matrix", "lernorte", "wand", "beruf"], hint: "Steuerhoheit: Zuordnungen, Rückmeldungen und Angebote werden in der Airtable-Base entschieden. Hier sehen Sie den Stand." }
+};
+const VIEWS = { wand: "Kachelwand", lernorte: "Lernorte", erfassen: "Angebot erfassen", beruf: "Berufsansicht", matrix: "Matrix", zuordnungen: "Zuordnungen", transparenz: "Transparenz" };
+const S = { role: "lehrperson", view: "wand", lesart: "schule", zyklus: "z3", bereich: "alle", badge: null, angebot: null, beruf: "hotellerie", lzyk: "alle", lbadge: "alle", zstatus: "alle", source: "lädt …" };
 let ZUO = D.zuordnungen.slice();
+let ANG = D.angebote.slice();
 let RM = [];
 
 const $ = s => document.querySelector(s);
@@ -147,53 +204,93 @@ const TYPTXT = { entspricht: "entspricht", traegt_bei: "trägt bei zu", keine: "
 const DISCLAIM = "Ein Badge aus einem Workshop belegt eine beobachtete Handlung in einer konkreten Situation. Es ist kein Qualifikationsnachweis im Sinne der Bildungsverordnung.";
 const maps = (badge, ebene) => ZUO.filter(z => z.badge === badge && z.ebene === ebene);
 const statusChip = s => s === "beschlossen" ? '<span class="chip besch">beschlossen</span>' : '<span class="chip entwurf">' + esc(s || "Entwurf") + '</span>';
+const quelleChip = q => `<span class="quelle" title="Quelle der Zuordnung">Quelle: ${esc(q || "Kuratorium")}</span>`;
 const sym = t => `<span class="sym ${t}" title="${TYPTXT[t]}" aria-label="${TYPTXT[t]}">${SYM[t]}</span>`;
+const siegelChip = s => `<span class="siegel ${esc(s)}" title="${esc(D.siegel[s] || "")}">Siegel: ${esc(s)}</span>`;
+const angeboteFuer = badgeId => ANG.filter(a => a.badges.some(b => b[0] === badgeId));
+const badgeName = id => (badgeById(id) || {}).titel || id;
 
+// ---------- Vorlesen (Browser-Sprachausgabe, kein externer Dienst) ----------
+function speak(text) {
+  try {
+    if (!("speechSynthesis" in window)) return alertMsg("Vorlesen wird von diesem Browser nicht unterstützt.");
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    const v = speechSynthesis.getVoices().find(v => /^de-CH/i.test(v.lang)) || speechSynthesis.getVoices().find(v => /^de/i.test(v.lang));
+    if (v) u.voice = v; u.lang = v ? v.lang : "de-CH"; u.rate = 0.95;
+    speechSynthesis.speak(u);
+  } catch (e) {}
+}
+function alertMsg(t) { const h = $("#rolehint"); h.innerHTML = esc(t); }
+
+// ---------- Laden ----------
+async function getJSON(op) { const r = await fetch("/api/data?op=" + op); return r.json(); }
 async function load() {
   try {
-    const r = await fetch("/api/data?op=zuordnungen");
-    const d = await r.json();
+    const d = await getJSON("zuordnungen");
     if (d.fallback) S.source = "Demo-Daten (Airtable nicht verbunden)";
-    else if (d.zuordnungen) { ZUO = d.zuordnungen; S.source = "Zuordnungen aus Airtable"; }
+    else if (d.zuordnungen) { ZUO = d.zuordnungen; S.source = "Daten aus Airtable"; }
     else S.source = "Fehler – Demo-Daten";
   } catch (e) { S.source = "lokal – Demo-Daten"; }
-  try {
-    const r = await fetch("/api/data?op=rueckmeldungen");
-    const d = await r.json();
-    RM = d.rueckmeldungen || [];
-  } catch (e) { RM = []; }
+  try { const d = await getJSON("angebote"); if (d.angebote) ANG = d.angebote; } catch (e) {}
+  try { const d = await getJSON("rueckmeldungen"); RM = d.rueckmeldungen || []; } catch (e) { RM = []; }
   render();
 }
 
-function setView(v) { S.view = v; S.badge = null; render(); $("#main").focus(); window.scrollTo(0, 0); }
-document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => setView(t.dataset.view)));
+// ---------- Rollen ----------
+const roleSel = $("#role");
+roleSel.innerHTML = Object.entries(ROLES).map(([k, r]) => `<option value="${k}">${esc(r.name)}</option>`).join("");
+roleSel.onchange = () => setRole(roleSel.value);
+function setRole(r) {
+  S.role = r; const R = ROLES[r];
+  S.lesart = R.lesart; S.view = R.views[0]; S.badge = null; S.angebot = null;
+  try { localStorage.setItem("ku-role", r); } catch (e) {}
+  render(); $("#main").focus(); window.scrollTo(0, 0);
+}
+function go(view, extra) { Object.assign(S, { view, badge: null, angebot: null }, extra || {}); render(); $("#main").focus(); window.scrollTo(0, 0); }
+
+function renderTabs() {
+  const vs = [...ROLES[S.role].views, "transparenz"];
+  $("#tabs").innerHTML = vs.map(v => `<button class="tab" data-view="${v}" aria-current="${S.view === v && !S.badge && !S.angebot ? "page" : "false"}">${VIEWS[v]}</button>`).join("");
+  $("#tabs").querySelectorAll("[data-view]").forEach(t => t.onclick = () => go(t.dataset.view));
+  roleSel.value = S.role;
+  $("#rolehint").innerHTML = `<b>${esc(ROLES[S.role].name)}:</b> ${esc(ROLES[S.role].hint)}`;
+}
 
 function seg(name, opts, cur, attr) {
   return `<span class="lbl">${name}</span><div class="seg" role="group" aria-label="${name}">` +
     opts.map(([v, l]) => `<button data-${attr}="${v}" aria-pressed="${v === cur}">${l}</button>`).join("") + `</div>`;
 }
-
 function renderBar() {
   const bar = $("#bar");
+  let h = "";
   if (S.view === "wand" && !S.badge) {
-    bar.innerHTML = seg("Lesart", [["du","Für dich"],["schule","Schule"],["sbw","Haltung (SBW)"],["betrieb","Betrieb"]], S.lesart, "lesart") +
+    h = seg("Lesart", [["du","Für dich"],["schule","Schule"],["sbw","Haltung (SBW)"],["betrieb","Betrieb"]], S.lesart, "lesart") +
       (S.lesart === "schule" ? seg("Zyklus", [["z2","Zyklus 2"],["z3","Zyklus 3"]], S.zyklus, "zyklus") : "") +
-      seg("Bereich", [["alle","alle"], ...D.bereiche.map(b => [b.id, b.name])], S.bereich, "bereich") +
-      `<span class="status">${esc(S.source)}</span>`;
-  } else {
-    bar.innerHTML = `<span class="status">${esc(S.source)}</span>`;
+      seg("Bereich", [["alle","alle"], ...D.bereiche.map(b => [b.id, b.name])], S.bereich, "bereich");
+  } else if (S.view === "lernorte" && !S.angebot) {
+    h = seg("Zyklus", [["alle","alle"],["Zyklus 2","Zyklus 2"],["Zyklus 3","Zyklus 3"]], S.lzyk, "lzyk") +
+      `<span class="lbl">Badge</span><select id="lbadge" style="border:1px solid var(--line2);border-radius:8px;padding:6px 10px"><option value="alle">alle</option>${D.badges.map(b => `<option value="${b.id}" ${S.lbadge === b.id ? "selected" : ""}>${esc(b.titel)}</option>`).join("")}</select>`;
+  } else if (S.view === "zuordnungen") {
+    h = seg("Status", [["alle","alle"],["Entwurf","Entwurf"],["beschlossen","beschlossen"]], S.zstatus, "zstatus");
   }
+  bar.innerHTML = h + `<span class="status">${esc(S.source)}</span>`;
   bar.querySelectorAll("[data-lesart]").forEach(b => b.onclick = () => { S.lesart = b.dataset.lesart; render(true); });
   bar.querySelectorAll("[data-zyklus]").forEach(b => b.onclick = () => { S.zyklus = b.dataset.zyklus; render(true); });
   bar.querySelectorAll("[data-bereich]").forEach(b => b.onclick = () => { S.bereich = b.dataset.bereich; render(); });
+  bar.querySelectorAll("[data-lzyk]").forEach(b => b.onclick = () => { S.lzyk = b.dataset.lzyk; render(); });
+  bar.querySelectorAll("[data-zstatus]").forEach(b => b.onclick = () => { S.zstatus = b.dataset.zstatus; render(); });
+  const lb = $("#lbadge"); if (lb) lb.onchange = () => { S.lbadge = lb.value; render(); };
 }
 
+// ---------- Kachelwand ----------
 function tileBody(b) {
   const a = area(b.bereich);
   let chips = (b.herkunft === "neu" ? '<span class="chip neu">neu</span>' : "") + (b.status !== "beschlossen" ? '<span class="chip entwurf">Entwurf</span>' : "") + (b.meta ? '<span class="chip meta">Meta-Badge</span>' : "");
   let body = "";
   if (S.lesart === "du") {
-    body = `<div class="du">${esc(b.du)}</div>`;
+    const n = angeboteFuer(b.id).length;
+    body = `<div class="du">${esc(b.du)}</div>` + (n ? `<div class="small">${n} Lernort${n > 1 ? "e" : ""} zum Üben</div>` : "");
   } else if (S.lesart === "schule") {
     const ind = b[S.zyklus] || [];
     body = b.meta ? `<div class="du">${esc(b.regel)}</div>` :
@@ -206,8 +303,7 @@ function tileBody(b) {
       : `<div class="maprow">${sym(z.typ)}<span><b>${esc(sbwById(z.ziel)?.name || z.ziel)}</b><br><span class="small">${esc(sbwById(z.ziel)?.ziel || "")}</span></span></div>`).join("")
       : `<div class="maprow">${sym("keine")}<span>noch keine Zuordnung</span></div>`;
   } else {
-    const m = maps(b.id, "bivo");
-    const byDim = {};
+    const m = maps(b.id, "bivo"); const byDim = {};
     m.forEach(z => { const d = dimOf(z.ziel); (byDim[d] = byDim[d] || []).push(z); });
     body = Object.keys(byDim).length ? Object.entries(byDim).map(([d, zs]) => `<div class="dim">${esc(d)}</div>` +
       zs.map(z => `<div class="maprow">${sym(z.typ)}<span>${esc(z.ziel)}</span></div>`).join("")).join("")
@@ -215,34 +311,43 @@ function tileBody(b) {
   }
   return `<div>${chips}</div><h3>${esc(b.titel)}</h3>${body}`;
 }
-
 function renderWand(flip) {
   const areas = D.bereiche.filter(a => S.bereich === "alle" || a.id === S.bereich);
   let h = "";
   if (S.lesart === "betrieb") h += `<div class="hint"><b>Hinweis:</b> ${DISCLAIM}</div>`;
   if (S.lesart === "sbw") h += `<div class="hint"><b>Haltungsebene:</b> Die SBW Future Skills beschreiben Antrieb und Haltung («Wollen»). Sie werden nicht vergeben, sondern geben dem beobachtbaren Handeln einen Sinn.</div>`;
+  const speakable = S.lesart === "du";
   areas.forEach(a => {
     const bs = D.badges.filter(b => b.bereich === a.id);
     if (!bs.length) return;
     const sbwN = a.sbw.map(id => sbwById(id)?.name).filter(Boolean).join(", ") || "keine SBW-Entsprechung";
     h += `<section class="area" style="--c:${a.farbe}"><div class="areahead"><h2>${a.name}</h2><span class="u">${esc(a.untertitel)}</span><span class="m">SBW: ${esc(sbwN)} · BiVo: ${esc(a.bivo)}</span></div><div class="grid">` +
-      bs.map(b => `<div class="tile"><button class="tilebtn${flip ? " flip" : ""}" style="--c:${a.farbe}" data-badge="${b.id}" aria-label="${esc(b.titel)} – Details öffnen">${tileBody(b)}</button></div>`).join("") +
+      bs.map(b => `<div class="tile"><button class="tilebtn${flip ? " flip" : ""}" style="--c:${a.farbe}" data-badge="${b.id}" aria-label="${esc(b.titel)} – Details öffnen">${tileBody(b)}</button>${speakable ? `<button class="speak" data-speak="${b.id}" aria-label="${esc(b.titel)} vorlesen">🔊 Vorlesen</button>` : ""}</div>`).join("") +
       `</div></section>`;
   });
   $("#main").innerHTML = h;
-  document.querySelectorAll("[data-badge]").forEach(el => el.onclick = () => { S.badge = el.dataset.badge; render(); $("#main").focus(); window.scrollTo(0, 0); });
+  bindBadgeLinks();
+  document.querySelectorAll("[data-speak]").forEach(el => el.onclick = () => { const b = badgeById(el.dataset.speak); speak(b.titel + ". " + b.du); });
+}
+function bindBadgeLinks() {
+  document.querySelectorAll("[data-badge]").forEach(el => el.onclick = () => { S.view = "wand"; S.badge = el.dataset.badge; S.angebot = null; render(); $("#main").focus(); window.scrollTo(0, 0); });
+  document.querySelectorAll("[data-angebot]").forEach(el => el.onclick = () => { S.view = "lernorte"; S.angebot = el.dataset.angebot; S.badge = null; render(); $("#main").focus(); window.scrollTo(0, 0); });
 }
 
+// ---------- Badge-Detail ----------
 function renderDetail() {
   const b = badgeById(S.badge), a = area(b.bereich);
   const sbwM = maps(b.id, "sbw"), bivoM = maps(b.id, "bivo");
-  const card = (z, title, sub) => `<div class="mapcard"><div class="maprow">${sym(z.typ)}<div><div class="t">${esc(title)}</div>${sub ? `<div class="b">${esc(sub)}</div>` : ""}<div class="b">${TYPTXT[z.typ]} · ${statusChip(z.status)}</div>${z.begruendung ? `<div class="b">Begründung: ${esc(z.begruendung)}</div>` : ""}</div></div></div>`;
+  const card = (z, title, sub) => `<div class="mapcard"><div class="maprow">${sym(z.typ)}<div><div class="t">${esc(title)}</div>${sub ? `<div class="b">${esc(sub)}</div>` : ""}<div class="b">${TYPTXT[z.typ]} · ${statusChip(z.status)} ${quelleChip(z.quelle)}</div>${z.begruendung ? `<div class="b">Begründung: ${esc(z.begruendung)}</div>` : ""}</div></div></div>`;
   const ind = z => (b[z] || []).map(i => `<li>${esc(i)}</li>`).join("");
   const rms = RM.filter(r => r.badge === b.id);
+  const los = angeboteFuer(b.id);
   const ziele = [...D.sbw.map(s => `<option value="sbw|${s.id}">SBW: ${esc(s.name)}</option>`), ...D.begriffe.map(x => `<option value="bivo|${esc(x.b)}">BiVo: ${esc(x.b)}</option>`)].join("");
+  const rolle = { jugend: "andere", lehrperson: "lehrperson", anbieter: "anbieter", betrieb: "kmu", kuratorium: "andere" }[S.role];
   $("#main").innerHTML = `
   <article class="detail" style="--c:${a.farbe};--cbg:${a.bg}">
-    <div class="dhead"><h2>${esc(b.titel)}<div class="du">${esc(b.du)}</div></h2><button class="back" id="back">← zurück zur Kachelwand</button></div>
+    <div class="dhead"><h2>${esc(b.titel)}<div class="du">${esc(b.du)}</div></h2>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="back" id="say">🔊 Vorlesen</button><button class="back" id="back">← zurück</button></div></div>
     <div class="cols">
       <div class="col"><h3>Warum</h3><p class="q">Haltung (SBW)</p>
         ${sbwM.length ? sbwM.map(z => z.typ === "keine" ? card(z, "keine Entsprechung im SBW-Modell", "") : card(z, sbwById(z.ziel)?.name || z.ziel, sbwById(z.ziel)?.ziel)).join("") : '<p class="b">noch keine Zuordnung</p>'}
@@ -251,21 +356,24 @@ function renderDetail() {
         ${b.meta ? `<p>${esc(b.regel)}</p>` : `
         <div class="zyk" role="group" aria-label="Zyklus"><button data-z="z2" aria-pressed="${S.zyklus==="z2"}">Zyklus 2</button><button data-z="z3" aria-pressed="${S.zyklus==="z3"}">Zyklus 3</button></div>
         <ul>${ind(S.zyklus)}</ul>`}
-        <p class="b" style="font-size:13px;color:var(--muted)">Bereich ${esc(a.name)} · Lehrplan 21: ${esc(a.lp21)} · Herkunft: ${esc(b.herkunft)} · ${statusChip(b.status)}</p>
+        <p style="font-size:13px;color:var(--muted)">Bereich ${esc(a.name)} · Lehrplan 21: ${esc(a.lp21)} · Herkunft: ${esc(b.herkunft)} · ${statusChip(b.status)}</p>
       </div>
       <div class="col"><h3>Wozu</h3><p class="q">Betrieb (BiVo-Begriffe)</p>
         ${bivoM.length ? bivoM.map(z => card(z, z.ziel, dimOf(z.ziel))).join("") : '<p class="b">noch keine Zuordnung</p>'}
         <div class="disclaim">${DISCLAIM}</div>
       </div>
     </div>
+    <div class="section"><h3>Wo kann man das üben? (${los.length})</h3>
+      ${los.length ? `<div class="bl">${los.map(o => `<button class="bpill" style="--c:${a.farbe}" data-angebot="${esc(o.id)}">${esc(o.titel)} · ${esc(o.anbieter)} ${o.beispiel ? '<span class="bsp">Beispiel</span>' : ""}</button>`).join("")}</div>` : '<p style="font-size:13.5px;color:var(--muted)">Noch kein Lernort hat dieses Badge deklariert.</p>'}
+    </div>
     <div class="section"><h3>Rückmeldungen (${rms.length})</h3>
-      ${rms.length ? rms.map(r => `<div class="fb"><b>${esc(r.art)}</b>${r.ziel ? " · " + esc(r.ebene === "sbw" ? (sbwById(r.ziel)?.name || r.ziel) : r.ziel) + (r.typ ? " (" + TYPTXT[r.typ] + ")" : "") : ""}<div>${esc(r.text)}</div><div class="meta">${esc(r.rolle)} · ${esc(r.status)}${r.datum ? " · " + new Date(r.datum).toLocaleDateString("de-CH") : ""}</div></div>`).join("") : '<p class="b" style="font-size:13.5px;color:var(--muted)">Noch keine Rückmeldungen.</p>'}
+      ${rms.length ? rms.map(r => `<div class="fb"><b>${esc(r.art)}</b>${r.ziel ? " · " + esc(r.ebene === "sbw" ? (sbwById(r.ziel)?.name || r.ziel) : r.ziel) + (r.typ ? " (" + TYPTXT[r.typ] + ")" : "") : ""}<div>${esc(r.text)}</div><div class="meta">${esc(r.rolle)} · ${esc(r.status)}${r.datum ? " · " + new Date(r.datum).toLocaleDateString("de-CH") : ""}</div></div>`).join("") : '<p style="font-size:13.5px;color:var(--muted)">Noch keine Rückmeldungen.</p>'}
     </div>
     <div class="section"><h3>Zuordnung vorschlagen oder kommentieren</h3>
-      <p style="font-size:13.5px;color:var(--muted);margin-top:0">Vorschläge gehen an das Kuratorium (Bildungsinstitutionen). Es entscheidet über die Aufnahme. Namen werden nicht öffentlich angezeigt.</p>
+      <p style="font-size:13.5px;color:var(--muted);margin-top:0">Vorschläge gehen an das Kuratorium (Bildungsinstitutionen). Es entscheidet über die Aufnahme; die Quelle bleibt sichtbar. Namen werden nicht öffentlich angezeigt.</p>
       <form class="rm" id="rm">
         <label>Art<select name="art"><option>Vorschlag</option><option>Kommentar</option></select></label>
-        <label>Rolle<select name="rolle"><option value="lehrperson">Lehrperson</option><option value="anbieter">Workshopanbieter</option><option value="kmu">KMU / Betrieb</option><option value="andere">andere</option></select></label>
+        <label>Rolle<select name="rolle"><option value="lehrperson">Lehrperson</option><option value="anbieter">Lernort-Anbieter</option><option value="kmu">KMU / Betrieb</option><option value="andere">andere</option></select></label>
         <label class="vz">Ziel der Zuordnung<select name="ziel">${ziele}</select></label>
         <label class="vz">Typ<select name="typ"><option value="entspricht">entspricht</option><option value="traegt_bei">trägt bei zu</option><option value="keine">keine Entsprechung</option></select></label>
         <label class="full">Begründung / Kommentar<textarea name="text" required></textarea></label>
@@ -276,8 +384,11 @@ function renderDetail() {
     </div>
   </article>`;
   $("#back").onclick = () => { S.badge = null; render(); };
+  $("#say").onclick = () => speak(b.titel + ". " + b.du);
   document.querySelectorAll("[data-z]").forEach(x => x.onclick = () => { S.zyklus = x.dataset.z; renderDetail(); });
+  bindBadgeLinks();
   const f = $("#rm");
+  f.rolle.value = rolle;
   const toggle = () => f.querySelectorAll(".vz").forEach(x => x.style.display = f.art.value === "Vorschlag" ? "" : "none");
   f.art.onchange = toggle; toggle();
   f.onsubmit = async e => {
@@ -293,20 +404,127 @@ function renderDetail() {
       if (!r.ok) throw new Error(d.error || "Fehler");
       msg.textContent = "Danke! Die Rückmeldung ist beim Kuratorium eingegangen.";
       f.text.value = "";
-      RM.push({ ...body, ebene: body.ebene || "", status: "offen", datum: new Date().toISOString(), rolle: body.rolle });
+      RM.push({ ...body, ebene: body.ebene || "", status: "offen", datum: new Date().toISOString() });
     } catch (err) { msg.textContent = "Konnte nicht gesendet werden: " + err.message; }
   };
 }
 
+// ---------- Lernorte ----------
+function offerCard(o) {
+  return `<button class="offer" data-angebot="${esc(o.id)}" aria-label="${esc(o.titel)} – Angebot öffnen">
+    <div style="display:flex;gap:6px;flex-wrap:wrap">${siegelChip(o.siegel)}${o.beispiel ? '<span class="bsp">Beispiel</span>' : ""}</div>
+    <h3>${esc(o.titel)}</h3><div class="anb">${esc(o.anbieter)}</div>
+    <div class="facts"><span class="fact">⏱ ${esc(o.dauer)}</span>${o.zyklus.map(z => `<span class="fact">${esc(z)}</span>`).join("")}<span class="fact">${esc(o.kosten)}</span></div>
+    <div class="kurz">${esc(o.kurz)}</div>
+    <div class="bl">${o.badges.map(([id]) => { const b = badgeById(id); if (!b) return ""; return `<span class="bpill" style="--c:${area(b.bereich).farbe}">${esc(b.titel)}</span>`; }).join("")}</div>
+  </button>`;
+}
+function renderLernorte() {
+  if (S.angebot) return renderAngebot();
+  const list = ANG.filter(o => (S.lzyk === "alle" || o.zyklus.includes(S.lzyk)) && (S.lbadge === "alle" || o.badges.some(b => b[0] === S.lbadge)));
+  $("#main").innerHTML = `<div class="panel"><h2>Ausserschulische Lernorte</h2><div class="sub">Angebote mit den Badges, die sie ansprechen. Das Siegel zeigt, wie gut die Zuordnung abgesichert ist: <b>gelistet</b> (erfasst) → <b>deklariert</b> (vom Anbieter begründet) → <b>geprüft</b> (vom Kuratorium bestätigt).</div>
+    ${S.role === "anbieter" ? `<div style="margin-top:10px"><button class="primary" id="neu">+ Angebot erfassen</button></div>` : ""}</div>
+    ${list.length ? `<div class="offers">${list.map(offerCard).join("")}</div>` : '<div class="panel">Keine Angebote für diese Auswahl.</div>'}`;
+  bindBadgeLinks();
+  const n = $("#neu"); if (n) n.onclick = () => go("erfassen");
+}
+function renderAngebot() {
+  const o = ANG.find(x => x.id === S.angebot); if (!o) { S.angebot = null; return renderLernorte(); }
+  $("#main").innerHTML = `<article class="panel">
+    <div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap"><div style="flex:1;min-width:260px">
+      <div style="display:flex;gap:6px;flex-wrap:wrap">${siegelChip(o.siegel)}${o.beispiel ? '<span class="bsp">Beispiel – erfundenes Angebot</span>' : ""}</div>
+      <h2 style="font-size:24px;margin-top:8px">${esc(o.titel)}</h2><div class="sub">${esc(o.anbieter)}${o.website ? ` · <a href="${esc(o.website)}" target="_blank" rel="noopener">Website</a>` : ""}</div>
+      <p style="font-size:15px">${esc(o.kurz)}</p></div>
+      <button class="back" id="back">← alle Lernorte</button></div>
+    <div class="kpis">
+      <div class="kpi"><div class="k">Dauer</div><div class="v">${esc(o.dauer)}</div></div>
+      <div class="kpi"><div class="k">Stufe</div><div class="v">${esc(o.zyklus.join(", ") || "–")}</div></div>
+      <div class="kpi"><div class="k">Ort</div><div class="v">${esc(o.ort || "–")}</div></div>
+      <div class="kpi hl"><div class="k">Kosten</div><div class="v">${esc(o.kosten || "–")}</div></div>
+    </div>
+    <p class="sub" style="margin-top:4px">${esc(D.siegel[o.siegel] || "")}</p>
+  </article>
+  ${o.ablauf.length ? `<div class="panel"><h2 style="font-size:17px">Ablauf</h2><div class="sub" style="margin-bottom:10px">Jede Phase mit dem Ergebnis, das am Ende dasteht.</div><div class="phases">
+    ${o.ablauf.map(p => `<div class="phase"><div class="t">${esc(p[0] || "")}</div><div><div class="n">${esc(p[1] || "")}</div>${p[2] ? `<div class="e"><b>Ergebnis:</b> ${esc(p[2])}</div>` : ""}</div></div>`).join("")}</div></div>` : ""}
+  <div class="panel"><h2 style="font-size:17px">Output: angesprochene Badges</h2><div class="sub" style="margin-bottom:10px">Was die Teilnehmenden zeigen können – mit der Begründung des Anbieters.</div>
+    ${o.badges.map(([id, why]) => { const b = badgeById(id); if (!b) return ""; const a = area(b.bereich);
+      return `<div class="mapcard" style="border-left:4px solid ${a.farbe}"><div class="t"><button class="bpill" style="--c:${a.farbe}" data-badge="${b.id}">${esc(b.titel)}</button> <span class="small" style="color:var(--muted)">${esc(a.name)}</span></div>
+        <div class="b">${why ? "Begründung: " + esc(why) : "<i>Noch nicht begründet.</i>"}</div></div>`; }).join("")}
+    <div class="disclaim">${DISCLAIM}</div></div>`;
+  $("#back").onclick = () => { S.angebot = null; render(); };
+  bindBadgeLinks();
+}
+
+// ---------- Angebot erfassen (Anbieter) ----------
+function renderErfassen() {
+  $("#main").innerHTML = `<div class="panel"><h2>Angebot erfassen</h2>
+    <div class="sub">Ihr Angebot wird als «eingereicht» gespeichert und erst nach Prüfung durch das Kuratorium veröffentlicht. Wenn Sie jedes gewählte Badge mit Indikatoren begründen, erhält es das Siegel «deklariert».</div></div>
+  <form class="rm panel" id="af" style="max-width:none">
+    <label>Titel*<input name="titel" required></label>
+    <label>Anbieter / Lernort*<input name="anbieter" required></label>
+    <label>Ort<input name="ort"></label>
+    <label>Dauer<input name="dauer" placeholder="z. B. 1 Tag, 3 Nachmittage"></label>
+    <label>Kosten<input name="kosten" placeholder="z. B. kostenlos, CHF 15 pro Kind"></label>
+    <label>Stufe<span style="display:flex;gap:14px;align-items:center;padding-top:6px"><span><input type="checkbox" name="z2" value="Zyklus 2"> Zyklus 2</span><span><input type="checkbox" name="z3" value="Zyklus 3"> Zyklus 3</span></span></label>
+    <label class="full">Kurzbeschreibung<textarea name="kurz"></textarea></label>
+    <div class="full"><div class="lbl" style="font-size:13px;margin-bottom:6px">Ablauf: Zeit · Phase · Ergebnis der Phase</div>
+      ${[0,1,2,3].map(i => `<div class="ph" style="margin-bottom:6px"><input name="p${i}t" placeholder="Zeit"><input name="p${i}n" placeholder="Phase"><input name="p${i}e" placeholder="Ergebnis"></div>`).join("")}</div>
+    <div class="full"><div class="lbl" style="font-size:13px;margin-bottom:6px">Welche Badges spricht Ihr Angebot an? Begründen Sie mit den Indikatoren (in der Kachelwand unter «Schule»).</div>
+      <div class="badgepick">${D.badges.filter(b => !b.meta).map(b => `<div class="bp" style="border-left:4px solid ${area(b.bereich).farbe}"><label><input type="checkbox" name="b_${b.id}"> ${esc(b.titel)}</label><textarea name="w_${b.id}" placeholder="Begründung: Woran sieht man das im Angebot?" style="display:none"></textarea></div>`).join("")}</div></div>
+    <label>Kontaktperson*<input name="kontaktperson" required autocomplete="name"></label>
+    <label>E-Mail<input name="email" type="email" autocomplete="email"></label>
+    <label class="full">Website<input name="website" type="url" placeholder="https://"></label>
+    <div class="full"><button class="primary" type="submit">Angebot einreichen</button><div class="msg" id="afmsg" role="status"></div>
+      <p style="font-size:12.5px;color:var(--muted)">Kontaktangaben sind nur für das Kuratorium sichtbar.</p></div>
+  </form>`;
+  const f = $("#af");
+  D.badges.forEach(b => { const c = f["b_" + b.id]; if (c) c.onchange = () => { f["w_" + b.id].style.display = c.checked ? "" : "none"; }; });
+  f.onsubmit = async e => {
+    e.preventDefault();
+    const body = {
+      titel: f.titel.value, anbieter: f.anbieter.value, ort: f.ort.value, dauer: f.dauer.value, kosten: f.kosten.value, kurz: f.kurz.value,
+      zyklus: [f.z2, f.z3].filter(x => x.checked).map(x => x.value),
+      ablauf: [0,1,2,3].map(i => [f["p"+i+"t"].value, f["p"+i+"n"].value, f["p"+i+"e"].value]).filter(p => p[1].trim()),
+      badges: D.badges.filter(b => f["b_" + b.id] && f["b_" + b.id].checked).map(b => [b.id, f["w_" + b.id].value]),
+      kontaktperson: f.kontaktperson.value, email: f.email.value, website: f.website.value
+    };
+    const msg = $("#afmsg"); msg.textContent = "wird gesendet …";
+    try {
+      const r = await fetch("/api/data?op=angebot", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      const d = await r.json();
+      if (d.fallback) { msg.textContent = "Demo-Modus: Airtable ist nicht verbunden, das Angebot wurde nicht gespeichert."; return; }
+      if (!r.ok) throw new Error(d.error || "Fehler");
+      msg.textContent = `Danke! Ihr Angebot ist eingereicht (vorläufiges Siegel: ${d.siegel}). Das Kuratorium meldet sich.`;
+      f.reset();
+    } catch (err) { msg.textContent = "Konnte nicht gesendet werden: " + err.message; }
+  };
+}
+
+// ---------- Beruf: Top 3 + Lernorte ----------
+function top3(begriffe) {
+  const W = { entspricht: 2, traegt_bei: 1 };
+  return D.badges.map(b => {
+    const hits = ZUO.filter(z => z.badge === b.id && z.ebene === "bivo" && begriffe.includes(z.ziel) && W[z.typ]);
+    return { b, hits, w: hits.reduce((s, z) => s + W[z.typ], 0) };
+  }).filter(x => x.w > 0).sort((a, c) => c.w - a.w || c.hits.length - a.hits.length).slice(0, 3);
+}
 function renderBeruf() {
   const be = D.berufe.find(x => x.id === S.beruf);
   const begriffe = be.alle ? D.begriffe.map(x => x.b) : be.begriffe;
   const dims = ["Methodenkompetenz", "Sozial- und Selbstkompetenz", "Fachkompetenz"];
-  let h = `<div class="panel"><h2>Berufsansicht</h2><div class="sub">Welche Badges zahlen auf die Handlungskompetenzen eines Berufs ein? Lücken werden bewusst gezeigt.</div>
-    <div style="margin-top:12px"><label class="lbl" for="bsel" style="font-size:13px;color:var(--muted);font-weight:600">Beruf </label>
+  const t3 = be.alle ? [] : top3(begriffe);
+  let h = `<div class="panel"><h2>Berufsansicht</h2><div class="sub">Welche Badges zahlen auf die Handlungskompetenzen eines Berufs ein – und wo können Jugendliche sie ausserschulisch üben?</div>
+    <div style="margin-top:12px"><label for="bsel" style="font-size:13px;color:var(--muted);font-weight:600">Beruf </label>
     <select id="bsel" style="border:1px solid var(--line2);border-radius:8px;padding:7px 10px;font-size:14px">${D.berufe.map(x => `<option value="${x.id}" ${x.id === S.beruf ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></div>
     <div class="sub" style="margin-top:8px">Quelle: ${esc(be.erlass)}${be.stand ? " · " + esc(be.stand) : ""}${be.alle ? "" : " · Auszug als Beispieldaten – vor Einsatz am Originalerlass prüfen"}</div>
     <div class="disclaim">${DISCLAIM}</div></div>`;
+  if (t3.length) {
+    h += `<div class="panel"><h2 style="font-size:17px">Top 3 Badges für diesen Beruf</h2><div class="sub" style="margin-bottom:10px">Reihenfolge nach den hinterlegten Zuordnungen («entspricht» vor «trägt bei zu»). Keine Bewertung von Personen.</div><div class="top3">` +
+      t3.map((x, i) => { const a = area(x.b.bereich); const los = angeboteFuer(x.b.id);
+        return `<div class="t3" style="--c:${a.farbe}"><div class="rank">${i + 1}. · ${esc(a.name)}</div><h3><button class="bpill" style="--c:${a.farbe}" data-badge="${x.b.id}">${esc(x.b.titel)}</button></h3>
+          <div class="why">${x.hits.map(z => `${sym(z.typ)} ${esc(z.ziel)}`).join("<br>")}</div>
+          <div class="lo"><b>Üben bei:</b> ${los.length ? los.map(o => `<a data-angebot="${esc(o.id)}">${esc(o.titel)}</a>${o.beispiel ? " (Beispiel)" : ""}`).join(", ") : "<i>noch kein Lernort</i>"}</div></div>`; }).join("") + `</div></div>`;
+  }
   dims.forEach(d => {
     const bs = begriffe.filter(x => dimOf(x) === d);
     if (!bs.length) return;
@@ -318,25 +536,24 @@ function renderBeruf() {
   });
   $("#main").innerHTML = h;
   $("#bsel").onchange = e => { S.beruf = e.target.value; renderBeruf(); };
-  document.querySelectorAll("[data-badge]").forEach(el => el.onclick = () => { S.view = "wand"; S.badge = el.dataset.badge; render(); window.scrollTo(0,0); });
+  bindBadgeLinks();
 }
 
+// ---------- Matrix ----------
 function matrixData() {
   const cols = [...D.sbw.map(s => ({ key: "sbw|" + s.id, label: "SBW: " + s.name })), ...D.begriffe.map(x => ({ key: "bivo|" + x.b, label: x.b }))];
   const rows = D.badges.map(b => ({ b, cells: cols.map(c => { const [e, t] = c.key.split("|"); const z = ZUO.find(z => z.badge === b.id && z.ebene === e && z.ziel === t); return z ? z.typ : ""; }) }));
   return { cols, rows };
 }
-
 function renderMatrix() {
   const { cols, rows } = matrixData();
-  let h = `<div class="panel"><h2>Übersetzungs-Matrix</h2><div class="sub">Badges (Zeilen) × SBW Future Skills und BiVo-Begriffe (Spalten).</div>
-    <div class="legend">${sym("entspricht")} entspricht ${sym("traegt_bei")} trägt bei zu <span>Badges ohne SBW-Entsprechung: ${rows.filter(r => maps(r.b.id, "sbw").some(z => z.typ === "keine")).map(r => esc(r.b.titel)).join(", ") || "–"}</span>
+  $("#main").innerHTML = `<div class="panel"><h2>Übersetzungs-Matrix</h2><div class="sub">Badges (Zeilen) × SBW Future Skills und BiVo-Begriffe (Spalten).</div>
+    <div class="legend">${sym("entspricht")} entspricht ${sym("traegt_bei")} trägt bei zu <span>Ohne SBW-Entsprechung: ${rows.filter(r => maps(r.b.id, "sbw").some(z => z.typ === "keine")).map(r => esc(r.b.titel)).join(", ") || "–"}</span>
     <button class="back" id="csv" style="margin-left:auto">CSV exportieren</button></div></div>
     <div class="tblwrap"><table class="mx"><thead><tr><th class="l">Badge</th>${cols.map(c => `<th class="v" scope="col">${esc(c.label)}</th>`).join("")}</tr></thead><tbody>` +
     rows.map(r => `<tr><th class="l" scope="row"><button class="bpill" style="--c:${area(r.b.bereich).farbe}" data-badge="${r.b.id}">${esc(r.b.titel)}</button></th>${r.cells.map(t => `<td>${t && t !== "keine" ? sym(t) : ""}</td>`).join("")}</tr>`).join("") +
     `</tbody></table></div>`;
-  $("#main").innerHTML = h;
-  document.querySelectorAll("[data-badge]").forEach(el => el.onclick = () => { S.view = "wand"; S.badge = el.dataset.badge; render(); window.scrollTo(0,0); });
+  bindBadgeLinks();
   $("#csv").onclick = () => {
     const q = s => '"' + String(s).replace(/"/g, '""') + '"';
     const lines = [["Badge", "Bereich", ...cols.map(c => c.label)].map(q).join(";"),
@@ -346,35 +563,65 @@ function renderMatrix() {
   };
 }
 
-function renderAbout() {
-  $("#main").innerHTML = `<div class="panel about"><h2>Worum es geht</h2>
-  <p>Der Kompetenz-Übersetzer verbindet drei Sprachen für dieselbe Sache:</p>
-  <ul>
-    <li><b>Warum</b> – SBW Future Skills: Haltung und Antrieb. Diese Ebene wird gelesen, nicht vergeben.</li>
-    <li><b>Was</b> – Badgeraster des Future Skills Hub Thurgau (Anhang A): beobachtbare Handlungen mit Indikatoren für Zyklus 2 und 3. Hier wird vergeben.</li>
-    <li><b>Wozu</b> – Begriffe der Bildungsverordnungen (Methoden-, Sozial- und Selbstkompetenz, Fachkompetenz): die Sprache der Betriebe.</li>
-  </ul>
-  <h2 style="margin-top:18px">Leitplanken</h2>
-  <ul>
-    <li>Ein Entwicklungsinstrument, kein Selektionsinstrument. Diese Version speichert keine Daten über Schülerinnen und Schüler.</li>
-    <li>Keine Scores, Ampeln oder Rankings. Keine KI-generierten Zuordnungen.</li>
+// ---------- Kuratorium: Zuordnungen mit Quelle × Status ----------
+function renderZuordnungen() {
+  const list = ZUO.filter(z => S.zstatus === "alle" || (z.status || "Entwurf") === S.zstatus);
+  const offen = RM.filter(r => r.status === "offen").length;
+  const cnt = s => ZUO.filter(z => (z.status || "Entwurf") === s).length;
+  $("#main").innerHTML = `<div class="panel"><h2>Zuordnungen: Quelle und Status</h2>
+    <div class="sub">Jede Zuordnung zeigt, wer sie vorgeschlagen hat und wie weit sie ist. Entschieden wird in der Airtable-Base (Tabellen «Zuordnungen», «Rückmeldungen», «Angebote»).</div>
+    <div class="kpis"><div class="kpi"><div class="k">Zuordnungen</div><div class="v">${ZUO.length}</div></div><div class="kpi"><div class="k">Entwurf</div><div class="v">${cnt("Entwurf")}</div></div>
+    <div class="kpi"><div class="k">beschlossen</div><div class="v">${cnt("beschlossen")}</div></div><div class="kpi hl"><div class="k">offene Rückmeldungen</div><div class="v">${offen}</div></div></div></div>
+    <div class="tblwrap"><table class="list"><thead><tr><th>Badge</th><th>Ebene</th><th>Ziel</th><th>Typ</th><th>Quelle</th><th>Status</th></tr></thead><tbody>
+    ${list.map(z => { const b = badgeById(z.badge); const a = b ? area(b.bereich) : null;
+      return `<tr><td>${b ? `<button class="bpill" style="--c:${a.farbe}" data-badge="${b.id}">${esc(b.titel)}</button>` : esc(z.badge)}</td><td>${z.ebene === "sbw" ? "SBW" : "BiVo"}</td>
+      <td>${esc(z.ebene === "sbw" ? (sbwById(z.ziel)?.name || "–") : z.ziel)}</td><td>${sym(z.typ)} ${TYPTXT[z.typ]}</td><td>${quelleChip(z.quelle)}</td><td>${statusChip(z.status)}</td></tr>`; }).join("")}
+    </tbody></table></div>`;
+  bindBadgeLinks();
+}
+
+// ---------- Transparenz ----------
+function renderTransparenz() {
+  $("#main").innerHTML = `<div class="panel about"><h2>Transparenz: wer sieht was, wer entscheidet</h2>
+  <p>Der Kompetenz-Übersetzer verbindet drei Sprachen für dieselbe Sache: <b>Warum</b> (SBW Future Skills: Haltung), <b>Was</b> (FSH-Badgeraster, Anhang A: beobachtbares Handeln) und <b>Wozu</b> (Begriffe der Bildungsverordnungen: Sprache der Betriebe).</p></div>
+  <div class="panel"><h2 style="font-size:17px">Wer entscheidet was</h2><div class="tblwrap" style="border:0"><table class="list"><thead><tr><th>Ebene</th><th>Entscheidet</th><th>Anbieter und Betriebe können</th></tr></thead><tbody>
+    <tr><td>Modell (Badges, Indikatoren, Berufe)</td><td>Kuratorium der Bildungsinstitutionen</td><td>Rückmeldungen geben</td></tr>
+    <tr><td>Zuordnungen Badge → SBW / BiVo</td><td>Kuratorium</td><td>Zuordnungen vorschlagen (Quelle bleibt sichtbar)</td></tr>
+    <tr><td>Angebote der Lernorte</td><td>Anbieter erfassen; Kuratorium publiziert und vergibt das Siegel</td><td>Angebot einreichen und Badges begründen</td></tr>
+  </tbody></table></div></div>
+  <div class="panel"><h2 style="font-size:17px">Was gespeichert wird – und was nicht</h2><div class="tblwrap" style="border:0"><table class="list"><thead><tr><th>Daten</th><th>Gespeichert?</th><th>Wer sieht es</th></tr></thead><tbody>
+    <tr><td>Daten über Schülerinnen und Schüler</td><td><b>Nein.</b> Diese Version speichert keine.</td><td>–</td></tr>
+    <tr><td>Rückmeldungen und Vorschläge</td><td>Ja, mit Name und Organisation</td><td>Öffentlich nur Text und Rolle; Name nur das Kuratorium</td></tr>
+    <tr><td>Angebote der Lernorte</td><td>Ja</td><td>Öffentlich erst nach Publikation; Kontaktangaben nur das Kuratorium</td></tr>
+    <tr><td>Gewählte Demo-Rolle</td><td>Nur im eigenen Browser</td><td>niemand</td></tr>
+  </tbody></table></div></div>
+  <div class="panel about"><h2 style="font-size:17px">Leitplanken</h2><ul>
+    <li>Entwicklungsinstrument, kein Selektionsinstrument. Betriebe sehen nie individuelle Profile.</li>
+    <li>Keine Scores, Ampeln oder Rankings von Personen. Keine KI-generierten Zuordnungen.</li>
     <li>Zuordnungen sind Deutungen, keine Gleichungen. Lücken werden sichtbar gemacht.</li>
-    <li>Steuerhoheit bei den Bildungsinstitutionen (Kuratorium). Anbieter und Betriebe können Zuordnungen vorschlagen.</li>
+    <li>Ein Badge aus einem Workshop ist kein Qualifikationsnachweis im Sinne der Bildungsverordnung.</li>
   </ul>
-  <h2 style="margin-top:18px">Quellen</h2>
+  <h2 style="font-size:17px;margin-top:14px">Modelle und Quellen</h2>
   <ul><li>${esc(D.quellen.sbw)}</li><li>${esc(D.quellen.fsh)}</li><li>${esc(D.quellen.bivo)}</li></ul>
-  <p style="color:var(--muted);font-size:13px">Die Badges «Neugier entdecken und verfolgen», «Nachhaltig denken und handeln» und «Unternehmergeist» sowie alle Zuordnungen sind Entwürfe.</p></div>`;
+  <p style="color:var(--muted);font-size:13px">Die Badges «Neugier entdecken und verfolgen», «Nachhaltig denken und handeln» und «Unternehmergeist» sowie alle Zuordnungen sind Entwürfe. Lernort-Angebote mit dem Vermerk «Beispiel» sind frei erfunden.</p></div>`;
 }
 
 function render(flip) {
-  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-current", t.dataset.view === S.view ? "page" : "false"));
-  renderBar();
-  if (S.view === "wand") S.badge ? renderDetail() : renderWand(flip);
+  if (!ROLES[S.role].views.includes(S.view) && S.view !== "transparenz" && !S.badge && !S.angebot) S.view = ROLES[S.role].views[0];
+  renderTabs(); renderBar();
+  if (S.badge) renderDetail();
+  else if (S.view === "wand") renderWand(flip);
+  else if (S.view === "lernorte") renderLernorte();
+  else if (S.view === "erfassen") renderErfassen();
   else if (S.view === "beruf") renderBeruf();
   else if (S.view === "matrix") renderMatrix();
-  else renderAbout();
+  else if (S.view === "zuordnungen") renderZuordnungen();
+  else renderTransparenz();
 }
 
+let startRole = "lehrperson";
+try { const r = localStorage.getItem("ku-role"); if (r && ROLES[r]) startRole = r; } catch (e) {}
+S.role = startRole; S.lesart = ROLES[startRole].lesart; S.view = ROLES[startRole].views[0];
 render();
 load();
 </script>
