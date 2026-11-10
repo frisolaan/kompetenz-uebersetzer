@@ -181,14 +181,14 @@ table.list th{background:#faf9f6;font-size:12px;}
 <script>
 const D = window.DATEN;
 const ROLES = {
-  jugend:     { name: "Jugendliche",          lesart: "du",      views: ["wand", "lernorte"],                       hint: "Du siehst, was die Badges bedeuten und wo du sie ausserhalb der Schule üben kannst. Tipp: Lass dir die Kacheln vorlesen." },
+  jugend:     { name: "Jugendliche",          lesart: "du",      views: ["wand", "lernorte"],                       hint: "Du siehst, was die Badges bedeuten und wo du sie ausserhalb der Schule üben kannst. Tipp: Lass dir die Kacheln vorlesen oder schalte «Einfache Sprache» ein." },
   lehrperson: { name: "Lehrperson",           lesart: "schule",  views: ["wand", "lernorte", "beruf", "matrix"],   hint: "Indikatoren für Zyklus 2 und 3, passende Lernorte für eure Klasse und der Anschluss an die Berufsbildung." },
   anbieter:   { name: "Lernort-Anbieter",     lesart: "schule",  views: ["lernorte", "erfassen", "wand"],          hint: "Erfassen Sie Ihr Angebot und begründen Sie, welche Badges es anspricht. Das Kuratorium prüft und vergibt das Siegel." },
   betrieb:    { name: "Betrieb / KMU",        lesart: "betrieb", views: ["beruf", "wand", "lernorte"],             hint: "Wählen Sie einen Beruf: Sie sehen die drei Badges, die am meisten einzahlen, und Lernorte, die sie fördern." },
   kuratorium: { name: "Kuratorium",           lesart: "schule",  views: ["zuordnungen", "matrix", "lernorte", "wand", "beruf"], hint: "Steuerhoheit: Zuordnungen, Rückmeldungen und Angebote werden in der Airtable-Base entschieden. Hier sehen Sie den Stand." }
 };
 const VIEWS = { wand: "Kachelwand", lernorte: "Lernorte", erfassen: "Angebot erfassen", beruf: "Berufsansicht", matrix: "Matrix", zuordnungen: "Zuordnungen", transparenz: "Transparenz" };
-const S = { role: "lehrperson", view: "wand", lesart: "schule", zyklus: "z3", bereich: "alle", badge: null, angebot: null, beruf: "hotellerie", lzyk: "alle", lbadge: "alle", zstatus: "alle", source: "lädt …" };
+const S = { role: "lehrperson", view: "wand", lesart: "schule", zyklus: "z3", bereich: "alle", badge: null, angebot: null, beruf: "hotellerie", einfach: false, lzyk: "alle", lbadge: "alle", zstatus: "alle", source: "lädt …" };
 let ZUO = D.zuordnungen.slice();
 let ANG = D.angebote.slice();
 let RM = [];
@@ -208,6 +208,7 @@ const quelleChip = q => `<span class="quelle" title="Quelle der Zuordnung">Quell
 const sym = t => `<span class="sym ${t}" title="${TYPTXT[t]}" aria-label="${TYPTXT[t]}">${SYM[t]}</span>`;
 const siegelChip = s => `<span class="siegel ${esc(s)}" title="${esc(D.siegel[s] || "")}">Siegel: ${esc(s)}</span>`;
 const angeboteFuer = badgeId => ANG.filter(a => a.badges.some(b => b[0] === badgeId));
+const duText = b => (S.einfach && b.einfach) ? b.einfach : b.du;
 const badgeName = id => (badgeById(id) || {}).titel || id;
 
 // ---------- Vorlesen (Browser-Sprachausgabe, kein externer Dienst) ----------
@@ -267,6 +268,7 @@ function renderBar() {
   if (S.view === "wand" && !S.badge) {
     h = seg("Lesart", [["du","Für dich"],["schule","Schule"],["sbw","Haltung (SBW)"],["betrieb","Betrieb"]], S.lesart, "lesart") +
       (S.lesart === "schule" ? seg("Zyklus", [["z2","Zyklus 2"],["z3","Zyklus 3"]], S.zyklus, "zyklus") : "") +
+      (S.lesart === "du" ? `<div class="seg"><button id="einfach" aria-pressed="${S.einfach}" title="Texte in einfacher Sprache (Entwurf)">Einfache Sprache</button></div>` : "") +
       seg("Bereich", [["alle","alle"], ...D.bereiche.map(b => [b.id, b.name])], S.bereich, "bereich");
   } else if (S.view === "lernorte" && !S.angebot) {
     h = seg("Zyklus", [["alle","alle"],["Zyklus 2","Zyklus 2"],["Zyklus 3","Zyklus 3"]], S.lzyk, "lzyk") +
@@ -280,6 +282,7 @@ function renderBar() {
   bar.querySelectorAll("[data-bereich]").forEach(b => b.onclick = () => { S.bereich = b.dataset.bereich; render(); });
   bar.querySelectorAll("[data-lzyk]").forEach(b => b.onclick = () => { S.lzyk = b.dataset.lzyk; render(); });
   bar.querySelectorAll("[data-zstatus]").forEach(b => b.onclick = () => { S.zstatus = b.dataset.zstatus; render(); });
+  const ef = $("#einfach"); if (ef) ef.onclick = () => { S.einfach = !S.einfach; try { localStorage.setItem("ku-einfach", S.einfach ? "1" : ""); } catch (e) {} render(true); };
   const lb = $("#lbadge"); if (lb) lb.onchange = () => { S.lbadge = lb.value; render(); };
 }
 
@@ -290,7 +293,7 @@ function tileBody(b) {
   let body = "";
   if (S.lesart === "du") {
     const n = angeboteFuer(b.id).length;
-    body = `<div class="du">${esc(b.du)}</div>` + (n ? `<div class="small">${n} Lernort${n > 1 ? "e" : ""} zum Üben</div>` : "");
+    body = `<div class="du">${esc(duText(b))}</div>` + (n ? `<div class="small">${n} Lernort${n > 1 ? "e" : ""} zum Üben</div>` : "");
   } else if (S.lesart === "schule") {
     const ind = b[S.zyklus] || [];
     body = b.meta ? `<div class="du">${esc(b.regel)}</div>` :
@@ -315,6 +318,7 @@ function renderWand(flip) {
   const areas = D.bereiche.filter(a => S.bereich === "alle" || a.id === S.bereich);
   let h = "";
   if (S.lesart === "betrieb") h += `<div class="hint"><b>Hinweis:</b> ${DISCLAIM}</div>`;
+  if (S.lesart === "du" && S.einfach) h += `<div class="hint"><b>Einfache Sprache:</b> Kurze Sätze, bekannte Wörter. Diese Texte sind ein Entwurf und noch nicht geprüft.</div>`;
   if (S.lesart === "sbw") h += `<div class="hint"><b>Haltungsebene:</b> Die SBW Future Skills beschreiben Antrieb und Haltung («Wollen»). Sie werden nicht vergeben, sondern geben dem beobachtbaren Handeln einen Sinn.</div>`;
   const speakable = S.lesart === "du";
   areas.forEach(a => {
@@ -327,7 +331,7 @@ function renderWand(flip) {
   });
   $("#main").innerHTML = h;
   bindBadgeLinks();
-  document.querySelectorAll("[data-speak]").forEach(el => el.onclick = () => { const b = badgeById(el.dataset.speak); speak(b.titel + ". " + b.du); });
+  document.querySelectorAll("[data-speak]").forEach(el => el.onclick = () => { const b = badgeById(el.dataset.speak); speak(b.titel + ". " + duText(b)); });
 }
 function bindBadgeLinks() {
   document.querySelectorAll("[data-badge]").forEach(el => el.onclick = () => { S.view = "wand"; S.badge = el.dataset.badge; S.angebot = null; render(); $("#main").focus(); window.scrollTo(0, 0); });
@@ -346,7 +350,7 @@ function renderDetail() {
   const rolle = { jugend: "andere", lehrperson: "lehrperson", anbieter: "anbieter", betrieb: "kmu", kuratorium: "andere" }[S.role];
   $("#main").innerHTML = `
   <article class="detail" style="--c:${a.farbe};--cbg:${a.bg}">
-    <div class="dhead"><h2>${esc(b.titel)}<div class="du">${esc(b.du)}</div></h2>
+    <div class="dhead"><h2>${esc(b.titel)}<div class="du">${esc(duText(b))}</div></h2>
       <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="back" id="say">🔊 Vorlesen</button><button class="back" id="back">← zurück</button></div></div>
     <div class="cols">
       <div class="col"><h3>Warum</h3><p class="q">Haltung (SBW)</p>
@@ -384,7 +388,7 @@ function renderDetail() {
     </div>
   </article>`;
   $("#back").onclick = () => { S.badge = null; render(); };
-  $("#say").onclick = () => speak(b.titel + ". " + b.du);
+  $("#say").onclick = () => speak(b.titel + ". " + duText(b));
   document.querySelectorAll("[data-z]").forEach(x => x.onclick = () => { S.zyklus = x.dataset.z; renderDetail(); });
   bindBadgeLinks();
   const f = $("#rm");
@@ -603,7 +607,7 @@ function renderTransparenz() {
   </ul>
   <h2 style="font-size:17px;margin-top:14px">Modelle und Quellen</h2>
   <ul><li>${esc(D.quellen.sbw)}</li><li>${esc(D.quellen.fsh)}</li><li>${esc(D.quellen.bivo)}</li></ul>
-  <p style="color:var(--muted);font-size:13px">Die Badges «Neugier entdecken und verfolgen», «Nachhaltig denken und handeln» und «Unternehmergeist» sowie alle Zuordnungen sind Entwürfe. Lernort-Angebote mit dem Vermerk «Beispiel» sind frei erfunden.</p></div>`;
+  <p style="color:var(--muted);font-size:13px">Die Badges «Neugier entdecken und verfolgen», «Nachhaltig denken und handeln» und «Unternehmergeist» sowie alle Zuordnungen und die Texte in einfacher Sprache sind Entwürfe. Lernort-Angebote mit dem Vermerk «Beispiel» sind frei erfunden.</p></div>`;
 }
 
 function render(flip) {
@@ -620,7 +624,7 @@ function render(flip) {
 }
 
 let startRole = "lehrperson";
-try { const r = localStorage.getItem("ku-role"); if (r && ROLES[r]) startRole = r; } catch (e) {}
+try { const r = localStorage.getItem("ku-role"); if (r && ROLES[r]) startRole = r; S.einfach = localStorage.getItem("ku-einfach") === "1"; } catch (e) {}
 S.role = startRole; S.lesart = ROLES[startRole].lesart; S.view = ROLES[startRole].views[0];
 render();
 load();
